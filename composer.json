@@ -19,9 +19,20 @@
         }
     ],
     "require": {
-        "php" : ">=8"
+        "php" : ">=8",
+        "twbs/bootstrap": "5.3.3"
     },
     "require-dev": {
         "phpunit/phpunit" : "9.5.8"
+    },
+    "scripts": {
+        "post-install-cmd": [
+            "xcopy /E /I /Y vendor\\twbs\\bootstrap\\dist\\css public\\css",
+            "xcopy /E /I /Y vendor\\twbs\\bootstrap\\dist\\js public\\js"
+        ],
+        "post-update-cmd": [
+            "xcopy /E /I /Y vendor\\twbs\\bootstrap\\dist\\css public\\css",
+            "xcopy /E /I /Y vendor\\twbs\\bootstrap\\dist\\js public\\js"
+        ]
     }
 }
