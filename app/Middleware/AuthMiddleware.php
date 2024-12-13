@@ -1,6 +1,6 @@
 <?php
 
-namespace dots\Belajar\PHP\MVC\Middleware;
+namespace Dots\Toko\Atk\Middleware;
 
 class AuthMiddleware implements Middleware
 {

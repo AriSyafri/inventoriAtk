@@ -1,6 +1,6 @@
 <?php
 
-namespace dots\Belajar\PHP\MVC\Controller;
+namespace Dots\Toko\Atk\Controller;
 
 class ProductController
 {

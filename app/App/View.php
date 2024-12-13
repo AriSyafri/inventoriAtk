@@ -1,6 +1,6 @@
 <?php 
 
-namespace dots\Belajar\PHP\MVC\App;
+namespace Dots\Toko\Atk\App;
 
 class View
 {

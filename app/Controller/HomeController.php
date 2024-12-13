@@ -1,8 +1,8 @@
 <?php
 
-namespace dots\Belajar\PHP\MVC\Controller;
+namespace Dots\Toko\Atk\Controller;
 
-use dots\Belajar\PHP\MVC\App\View;
+use Dots\Toko\Atk\App\View;
 
 class HomeController
 {
