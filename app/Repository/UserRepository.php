@@ -1,8 +1,8 @@
 <?php
 
-namespace dots\Toko\Atk\Repository;
+namespace Dots\Toko\Atk\Repository;
 
-use dots\Toko\Atk\Domain\User;
+use Dots\Toko\Atk\Domain\User;
 
 class UserRepository
 {
@@ -41,6 +41,12 @@ class UserRepository
         } finally {
             $statement->closeCursor();
         }
+    }
+
+    public function deleteAll():void {
+
+        $this->connection->exec("DELETE FROM users");
+
     }
 
 }
