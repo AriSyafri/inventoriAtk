@@ -1,5 +1,5 @@
 <?php
-namespace dots\Toko\Atk\Domain;
+namespace Dots\Toko\Atk\Domain;
 
 class User
 {
@@ -7,5 +7,5 @@ class User
     public string $name;
     public string $password;
 
-    
+
 }
