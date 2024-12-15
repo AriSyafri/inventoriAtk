@@ -5,8 +5,8 @@ namespace Dots\Toko\Atk\Service;
 use Dots\Toko\Atk\Config\Database;
 use Dots\Toko\Atk\Domain\User;
 use Dots\Toko\Atk\Exception\ValidationException;
-use Dots\toko\Atk\Model\UserRegisterRequest;
-use Dots\toko\Atk\Model\UserRegisterResponse;
+use Dots\Toko\Atk\Model\UserRegisterRequest;
+use Dots\Toko\Atk\Model\UserRegisterResponse;
 use Dots\Toko\Atk\Repository\UserRepository;
 
 
