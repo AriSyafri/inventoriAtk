@@ -5,6 +5,8 @@ namespace Dots\Toko\Atk\Service;
 use Dots\Toko\Atk\Config\Database;
 use Dots\Toko\Atk\Domain\User;
 use Dots\Toko\Atk\Exception\ValidationException;
+use Dots\Toko\Atk\Model\UserLoginRequest;
+use Dots\Toko\Atk\Model\UserLoginResponse;
 use Dots\Toko\Atk\Model\UserRegisterRequest;
 use Dots\Toko\Atk\Model\UserRegisterResponse;
 use Dots\Toko\Atk\Repository\UserRepository;
@@ -53,6 +55,32 @@ class UserService
         trim($request->id) == "" || trim($request->name) == "" ||
         trim($request->password) == "") {
             throw new ValidationException("id, name, password can not blank");
+        }
+    }
+
+    public function login(UserLoginRequest $request): UserLoginResponse
+    {
+        $this->validateUserLoginRequest($request);
+
+        $user = $this->userRepository->findById($request->id);
+        if($user == null){
+            throw new ValidationException("Id or password is wrong");
+        }
+
+        if(password_verify($request->password, $user->password)) {
+            $response = new UserLoginResponse();
+            $response->user = $user;
+            return $response;
+        } else {
+            throw new ValidationException("Id or password is wrong");
+        }
+
+    }
+
+    private function validateUserLoginRequest(UserLoginRequest $request){
+        if($request->id == null || $request->password == null ||
+        trim($request->id) == "" || trim($request->password) == "") {
+            throw new ValidationException("id, password can not blank");
         }
     }
 
