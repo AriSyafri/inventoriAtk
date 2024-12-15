@@ -52,7 +52,7 @@ class UserService
         if($request->id == null || $request->name == null || $request->password == null ||
         trim($request->id) == "" || trim($request->name) == "" ||
         trim($request->password) == "") {
-            throw new ValidationException("id, name, password ca not blank");
+            throw new ValidationException("id, name, password can not blank");
         }
     }
 
