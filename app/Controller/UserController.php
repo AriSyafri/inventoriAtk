@@ -6,6 +6,7 @@ namespace Dots\Toko\Atk\Controller;
 use Dots\Toko\Atk\App\View;
 use Dots\Toko\Atk\Config\Database;
 use Dots\Toko\Atk\Exception\ValidationException;
+use Dots\Toko\Atk\Model\UserLoginRequest;
 use Dots\Toko\Atk\Model\UserRegisterRequest;
 use Dots\Toko\Atk\Repository\UserRepository;
 use Dots\Toko\Atk\Service\UserService;
@@ -46,6 +47,31 @@ class UserController
             ]);
         }
 
+
+    }
+
+    public function login()
+    {
+        View::render('User/login', [
+            "title" =>"Login user"
+        ]);
+    }
+
+    public function postLogin()
+    {
+        $request = new UserLoginRequest();
+        $request->id = $_POST['id'];
+        $request->password = $_POST['password'];
+
+        try {
+            $this->userService->login($request);
+            View::redirect('/');
+        } catch (ValidationException $exception){
+            View::render('User/login', [
+                'title' => 'Login user',
+                'error' => $exception->getMessage()
+            ]);
+        }
 
     }
 }
