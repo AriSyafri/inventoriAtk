@@ -86,8 +86,8 @@ class UserServiceTest extends TestCase
         $this->expectException(ValidationException::class);
 
         $request = new UserLoginRequest();
-        $request->id = 'ari';
-        $request->password = 'ari';
+        $request->id = '';
+        $request->password = '';
         
         $this->userService->login($request);
     }
@@ -96,8 +96,8 @@ class UserServiceTest extends TestCase
     {
         $user = new User();
         $user->id = "ari";
-        $user->name = "ari";
-        $user->password = password_hash("ari", PASSWORD_BCRYPT);
+        $user->name = "Ari";
+        $user->password = password_hash("rahasia", PASSWORD_BCRYPT);
 
         $this->expectException(ValidationException::class);
 
@@ -113,15 +113,16 @@ class UserServiceTest extends TestCase
     {
         $user = new User();
         $user->id = "ari";
-        $user->name = "ari";
-        $user->password = password_hash("ari", PASSWORD_BCRYPT);
+        $user->name = "Ari";
+        $user->password = password_hash("rahasia", PASSWORD_BCRYPT);
 
+        $this->userRepository->save($user);
         // mengapa harus ada expect exception ?
-        $this->expectException(ValidationException::class);
+        //$this->expectException(ValidationException::class);
 
         $request = new UserLoginRequest();
         $request->id = 'ari';
-        $request->password = 'salah';
+        $request->password = 'rahasia';
         
         $response = $this->userService->login($request);
 
