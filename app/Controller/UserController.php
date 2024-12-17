@@ -8,7 +8,9 @@ use Dots\Toko\Atk\Config\Database;
 use Dots\Toko\Atk\Exception\ValidationException;
 use Dots\Toko\Atk\Model\UserLoginRequest;
 use Dots\Toko\Atk\Model\UserRegisterRequest;
+use Dots\Toko\Atk\Repository\SessionRepository;
 use Dots\Toko\Atk\Repository\UserRepository;
+use Dots\Toko\Atk\Service\SessionService;
 use Dots\Toko\Atk\Service\UserService;
 
 class UserController
@@ -16,11 +18,16 @@ class UserController
 
     private UserService $userService;
 
+    private SessionService $sessionService;
+
     public function __construct()
     {
         $connection = Database::getConnection();
         $userRepository = new UserRepository($connection);
         $this->userService = new UserService($userRepository);
+
+        $sesionRepository = new SessionRepository($connection);
+        $this->sessionService = new SessionService($sesionRepository, $userRepository);
     } 
 
     
@@ -64,7 +71,9 @@ class UserController
         $request->password = $_POST['password'];
 
         try {
-            $this->userService->login($request);
+            $response = $this->userService->login($request);
+            $this->sessionService->create($response->user->id);
+
             View::redirect('/');
         } catch (ValidationException $exception){
             View::render('User/login', [
