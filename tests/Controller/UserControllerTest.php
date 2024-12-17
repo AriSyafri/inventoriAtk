@@ -6,10 +6,18 @@ namespace Dots\Toko\Atk\App {
     }
 }
 
+namespace Dots\Toko\Atk\Service {
+
+    function setcookie(string $name, string $value){
+        echo "$name: $value";
+    }
+
+}
 namespace Dots\Toko\Atk\Controller {
 
     use Dots\Toko\Atk\Config\Database;
     use Dots\Toko\Atk\Domain\User;
+    use Dots\Toko\Atk\Repository\SessionRepository;
     use Dots\Toko\Atk\Repository\UserRepository;
     use PHPUnit\Framework\TestCase;
     
@@ -18,10 +26,14 @@ namespace Dots\Toko\Atk\Controller {
     
         private UserController $userController;
         private UserRepository $userRepository;
+        private SessionRepository $sessionRepository;
         
         protected function setUp(): void
         {
             $this->userController = new UserController();
+
+            $this->sessionRepository = new SessionRepository(Database::getConnection());
+            $this->sessionRepository->deleteAll();
     
             $this->userRepository = new UserRepository(Database::getConnection());
             $this->userRepository->deleteAll();
@@ -115,6 +127,8 @@ namespace Dots\Toko\Atk\Controller {
             $this->userController->postLogin();
 
             $this->expectOutputRegex("[Location: /]");
+            $this->expectOutputRegex("[X-DOTS-SESSION: ]");
+            
 
         }
 
