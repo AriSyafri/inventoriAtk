@@ -5,7 +5,6 @@ namespace Dots\Toko\Atk\Service;
 use Dots\Toko\Atk\Domain\Session;
 use Dots\Toko\Atk\Domain\User;
 use Dots\Toko\Atk\Repository\SessionRepository;
-use Dots\Toko\Atk\Repository\SessionRepositoryTest;
 use Dots\Toko\Atk\Repository\UserRepository;
 
 class SessionService {
