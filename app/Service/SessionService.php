@@ -1,15 +1,18 @@
 <?php
 
+namespace Dots\Toko\Atk\Service;
+
 use Dots\Toko\Atk\Domain\Session;
 use Dots\Toko\Atk\Domain\User;
-use Dots\Toko\Atk\Repository\SessionRepository as RepositorySessionRepository;
+use Dots\Toko\Atk\Repository\SessionRepository;
+use Dots\Toko\Atk\Repository\SessionRepositoryTest;
 use Dots\Toko\Atk\Repository\UserRepository;
 
-class SessionRepository {
+class SessionService {
 
     public static string $COOKIE_NAME = "X-DOTS-SESSION";
 
-    private RepositorySessionRepository $sessionRepository;
+    private SessionRepository $sessionRepository;
     private UserRepository $userRepository;
 
     public function __construct(SessionRepository $sessionRepository, UserRepository $userRepository)
