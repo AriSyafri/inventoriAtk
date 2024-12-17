@@ -16,9 +16,11 @@ namespace Dots\Toko\Atk\Service {
 namespace Dots\Toko\Atk\Controller {
 
     use Dots\Toko\Atk\Config\Database;
+    use Dots\Toko\Atk\Domain\Session;
     use Dots\Toko\Atk\Domain\User;
     use Dots\Toko\Atk\Repository\SessionRepository;
     use Dots\Toko\Atk\Repository\UserRepository;
+    use Dots\Toko\Atk\Service\SessionService;
     use PHPUnit\Framework\TestCase;
     
     class UserControllerTest extends TestCase
@@ -177,6 +179,30 @@ namespace Dots\Toko\Atk\Controller {
             $this->expectOutputRegex("[Id]");
             $this->expectOutputRegex("[Password]");
             $this->expectOutputRegex("[Id or password is wrong]");
+        }
+
+        public function testLogout()
+        {
+            $user = new User();
+            $user->id = "aari";
+            $user->name = "aari";
+            $user->password = password_hash("rahasia", PASSWORD_BCRYPT);
+    
+            $this->userRepository->save($user);
+
+            $session = new Session();
+            $session->id = uniqid();
+            $session->userId = $user->id;
+            $this->sessionRepository->save($session);
+
+            $_COOKIE[SessionService::$COOKIE_NAME] = $session->id;
+
+            $this->userController->logout();
+
+             $this->expectOutputRegex("[Location: /]");
+             $this->expectOutputRegex("[X-DOTS-SESSION: ]");
+
+
         }
     }
     
