@@ -7,7 +7,9 @@ use Dots\Toko\Atk\Config\Database;
 use Dots\Toko\Atk\Domain\User;
 use Dots\Toko\Atk\Exception\ValidationException;
 use Dots\Toko\Atk\Model\UserLoginRequest;
+use Dots\Toko\Atk\Model\UserProfileUpdateRequest;
 use Dots\Toko\Atk\Model\UserRegisterRequest;
+use Dots\Toko\Atk\Repository\SessionRepository;
 use Dots\Toko\Atk\Repository\UserRepository;
 use PHPUnit\Framework\TestCase;
 
@@ -17,6 +19,8 @@ class UserServiceTest extends TestCase
     private UserService $userService;
     private UserRepository $userRepository;
 
+    private SessionRepository $sessionRepository;
+
 
 
     protected function setUp(): void
@@ -24,7 +28,9 @@ class UserServiceTest extends TestCase
         $connection = Database::getConnection();
         $this->userRepository = new UserRepository($connection);
         $this->userService = new UserService($this->userRepository); 
-
+        $this->sessionRepository = new SessionRepository($connection);
+        
+        $this->sessionRepository->deleteAll();
         $this->userRepository->deleteAll();
     }
 
@@ -128,6 +134,52 @@ class UserServiceTest extends TestCase
 
         self::assertEquals($request->id, $response->user->id);
         self::assertTrue(password_verify($request->password, $response->user->password));
+    }
+
+    public function testUpdateSuccess()
+    {
+        $user = new User();
+        $user->id = "ari";
+        $user->name = "Ari";
+        $user->password = password_hash("rahasia", PASSWORD_BCRYPT);
+        $this->userRepository->save($user);
+
+
+        $request = new UserProfileUpdateRequest();
+        $request->id = "ari";
+        $request->name = "Raden";
+
+        $this->userService->updateProfile($request);
+
+        $result = $this->userRepository->findById($user->id);
+
+        self::assertEquals($request->name, $result->name);
+
+    }
+
+    public function testUpdateValidationError()
+    {
+
+        $this->expectException(ValidationException::class);
+
+        $request = new UserProfileUpdateRequest();
+        $request->id = "";
+        $request->name = "";
+
+        $this->userService->updateProfile($request);
+
+    }
+
+    public function testUpdateNotFound()
+    {
+        $this->expectException(ValidationException::class);
+
+        $request = new UserProfileUpdateRequest();
+        $request->id = "ari";
+        $request->name = "Raden";
+
+        $this->userService->updateProfile($request);
+
     }
 
 
