@@ -7,6 +7,7 @@ use Dots\Toko\Atk\App\View;
 use Dots\Toko\Atk\Config\Database;
 use Dots\Toko\Atk\Exception\ValidationException;
 use Dots\Toko\Atk\Model\UserLoginRequest;
+use Dots\Toko\Atk\Model\UserPasswordUpdateRequest;
 use Dots\Toko\Atk\Model\UserProfileUpdateRequest;
 use Dots\Toko\Atk\Model\UserRegisterRequest;
 use Dots\Toko\Atk\Repository\SessionRepository;
@@ -125,4 +126,38 @@ class UserController
             ]);
         }
     }
+
+    public function updatePassword()
+    {
+        $user = $this->sessionService->current();
+        View::render('User/password', [
+            "title" => "Update user password",
+            "user" => [
+                "id" => $user->id
+            ]
+            ]);
+    }
+
+    public function postUpdatePassword()
+    {
+        $user = $this->sessionService->current();
+        $request = new UserPasswordUpdateRequest();
+        $request->id = $user->id;
+        $request->oldPassword = $_POST['oldPassword'];
+        $request->newPassword = $_POST['newPassword'];
+
+        try {
+            $this->userService->updatePassword($request);
+            View::redirect('/');
+        } catch (ValidationException $exception) {
+            View::render('User/password', [
+                "title" => "Update user password",
+                "error" => $exception->getMessage(),
+                "user" => [
+                    "id" => $user->id
+                ]
+                ]);
+        }
+    }
+
 }
