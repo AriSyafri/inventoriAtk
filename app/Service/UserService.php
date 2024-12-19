@@ -86,7 +86,7 @@ class UserService
         }
     }
 
-    private function updateProfile(UserProfileUpdateRequest $request): UserProfileUpdateResponse
+    public function updateProfile(UserProfileUpdateRequest $request): UserProfileUpdateResponse
     {
 
         $this->validateUserProfileUpdateRequest($request);
@@ -100,14 +100,14 @@ class UserService
             }
 
             $user->name = $request->name;
-            $this->userRepository->save($user);
+            $this->userRepository->update($user);
 
             Database::commitTransaction();
 
             $response = new UserProfileUpdateResponse();
             $response->user = $user;
             return $response;
-            
+
         } catch (\Exception $exception) {
             Database::rollbackTransaction();
             throw $exception;
