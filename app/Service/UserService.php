@@ -7,6 +7,8 @@ use Dots\Toko\Atk\Domain\User;
 use Dots\Toko\Atk\Exception\ValidationException;
 use Dots\Toko\Atk\Model\UserLoginRequest;
 use Dots\Toko\Atk\Model\UserLoginResponse;
+use Dots\Toko\Atk\Model\UserPasswordUpdateRequest;
+use Dots\Toko\Atk\Model\UserPasswordUpdateResponse;
 use Dots\Toko\Atk\Model\UserProfileUpdateRequest;
 use Dots\Toko\Atk\Model\UserProfileUpdateResponse;
 use Dots\Toko\Atk\Model\UserRegisterRequest;
@@ -121,6 +123,43 @@ class UserService
         }
     }
 
-    
+    public function updatePassword(UserPasswordUpdateRequest $request): UserPasswordUpdateResponse
+    {
+        $this->validateUserPassworUpdateRequest($request);
+
+        try {
+            Database::beginTransaction();
+            
+            $user = $this->userRepository->findById($request->id);
+
+            if($user == null){
+                throw new ValidationException("User is not found");
+            }
+
+            if(!password_verify($request->oldPassword, $user->password)){
+                throw new ValidationException("Old Password is wrong");
+            }
+
+            $user->password = password_hash($request->newPassword, PASSWORD_BCRYPT);
+            $this->userRepository->update($user);
+            Database::commitTransaction();
+
+            $response = new UserPasswordUpdateResponse();
+            $response->user = $user;
+            return $response;
+            
+        } catch(\Exception $exception) {
+            Database::rollbackTransaction();
+            throw $exception;
+        }
+    }
+
+    private function validateUserPassworUpdateRequest(UserPasswordUpdateRequest $request)
+    {
+        if($request->id == null || $request->oldPassword == null || $request->newPassword == null ||
+        trim($request->id) == "" || trim($request->oldPassword) == "" || trim($request->newPassword) == "") {
+            throw new ValidationException("id, Old password, New password can not blank");
+        }
+    }
 
 }
