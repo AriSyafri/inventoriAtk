@@ -7,6 +7,7 @@ use Dots\Toko\Atk\Config\Database;
 use Dots\Toko\Atk\Domain\User;
 use Dots\Toko\Atk\Exception\ValidationException;
 use Dots\Toko\Atk\Model\UserLoginRequest;
+use Dots\Toko\Atk\Model\UserPasswordUpdateRequest;
 use Dots\Toko\Atk\Model\UserProfileUpdateRequest;
 use Dots\Toko\Atk\Model\UserRegisterRequest;
 use Dots\Toko\Atk\Repository\SessionRepository;
@@ -182,5 +183,67 @@ class UserServiceTest extends TestCase
 
     }
 
+    public function testUpdatePasswordSuccess()
+    {
+        $user = new User();
+        $user->id = "ari";
+        $user->name = "Ari";
+        $user->password = password_hash("rahasia", PASSWORD_BCRYPT);
+        $this->userRepository->save($user);
+
+        $request = new UserPasswordUpdateRequest();
+        $request->id = "ari";
+        $request->oldPassword = "rahasia";
+        $request->newPassword = "new";
+
+        $this->userService->updatePassword($request);
+
+        $result = $this->userRepository->findById($user->id);
+        self::assertTrue(password_verify($request->newPassword, $result->password));
+
+    }
+
+    public function testUpdatePasswordValidationError()
+    {
+        $this->expectException(ValidationException::class);
+
+        $request = new UserPasswordUpdateRequest();
+        $request->id = "ari";
+        $request->oldPassword = "";
+        $request->newPassword = "";
+
+        $this->userService->updatePassword($request);
+
+    }
+
+    public function testUpdatePaswordWrongOldPassword()
+    {
+        $this->expectException((ValidationException::class));
+
+        $user = new User();
+        $user->id = "ari";
+        $user->name = "Ari";
+        $user->password = password_hash("rahasia", PASSWORD_BCRYPT);
+        $this->userRepository->save($user);
+
+        $request = new UserPasswordUpdateRequest();
+        $request->id = "ari";
+        $request->oldPassword = "salah";
+        $request->newPassword = "new";
+
+        $this->userService->updatePassword($request);
+    }
+
+    public function testUpdatePasswordNotFound()
+    {
+        $this->expectException((ValidationException::class));
+        
+        $request = new UserPasswordUpdateRequest();
+        $request->id = "ari";
+        $request->oldPassword = "salah";
+        $request->newPassword = "neariw";
+
+        $this->userService->updatePassword($request);
+    }
 
 } 
