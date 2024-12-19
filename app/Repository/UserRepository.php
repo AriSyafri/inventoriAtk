@@ -26,7 +26,7 @@ class UserRepository
     {
         $statement = $this->connection->prepare("UPDATE users SET name = ?, password = ? WHERE id = ?");
         $statement->execute([
-            $user->id, $user->name, $user->password
+            $user->name, $user->password, $user->id,
         ]);
         return $user;
     }
