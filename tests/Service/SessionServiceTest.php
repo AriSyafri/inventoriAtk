@@ -2,6 +2,8 @@
 
 namespace Dots\Toko\Atk\Service;
 
+require_once __DIR__ . '/../Helper/helper.php';
+
 use Dots\Toko\Atk\Config\Database;
 use Dots\Toko\Atk\Domain\Session;
 use Dots\Toko\Atk\Domain\User;
@@ -9,12 +11,11 @@ use Dots\Toko\Atk\Repository\SessionRepository;
 use Dots\Toko\Atk\Repository\UserRepository;
 use PHPUnit\Framework\TestCase;
 
-function setcookie(string $name, string $value){
-    echo "$name: $value";
-}
 
 class SessionServiceTest extends TestCase
 {
+
+
     private SessionService $sessionService;
     private SessionRepository $sessionRepository;
     private UserRepository $userRepository;

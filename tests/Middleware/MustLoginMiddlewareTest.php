@@ -1,12 +1,9 @@
 <?php
 
-namespace Dots\Toko\Atk\App {
-    function header(string $value) {
-        echo $value;
-    }
-}
+
 
 namespace Dots\Toko\Atk\Middleware {
+    require_once __DIR__ . '/../Helper/helper.php';
 
     use Dots\Toko\Atk\Config\Database;
     use Dots\Toko\Atk\Domain\Session;

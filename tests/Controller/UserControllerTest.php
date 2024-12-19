@@ -1,20 +1,8 @@
 <?php
 
-namespace Dots\Toko\Atk\App {
-    function header(string $value){
-        echo $value;
-    }
-}
-
-namespace Dots\Toko\Atk\Service {
-
-    function setcookie(string $name, string $value){
-        echo "$name: $value";
-    }
-
-}
 namespace Dots\Toko\Atk\Controller {
-
+    require_once __DIR__ . '/../Helper/helper.php';
+    
     use Dots\Toko\Atk\Config\Database;
     use Dots\Toko\Atk\Domain\Session;
     use Dots\Toko\Atk\Domain\User;
