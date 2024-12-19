@@ -7,6 +7,8 @@ use Dots\Toko\Atk\Domain\User;
 use Dots\Toko\Atk\Exception\ValidationException;
 use Dots\Toko\Atk\Model\UserLoginRequest;
 use Dots\Toko\Atk\Model\UserLoginResponse;
+use Dots\Toko\Atk\Model\UserProfileUpdateRequest;
+use Dots\Toko\Atk\Model\UserProfileUpdateResponse;
 use Dots\Toko\Atk\Model\UserRegisterRequest;
 use Dots\Toko\Atk\Model\UserRegisterResponse;
 use Dots\Toko\Atk\Repository\UserRepository;
@@ -81,6 +83,41 @@ class UserService
         if($request->id == null || $request->password == null ||
         trim($request->id) == "" || trim($request->password) == "") {
             throw new ValidationException("id, password can not blank");
+        }
+    }
+
+    private function updateProfile(UserProfileUpdateRequest $request): UserProfileUpdateResponse
+    {
+
+        $this->validateUserProfileUpdateRequest($request);
+
+        try {
+            Database::beginTransaction();
+
+            $user = $this->userRepository->findById($request->id);
+            if($user == null) {
+                throw new ValidationException("User is not found");
+            }
+
+            $user->name = $request->name;
+            $this->userRepository->save($user);
+
+            Database::commitTransaction();
+
+            $response = new UserProfileUpdateResponse();
+            $response->user = $user;
+            return $response;
+            
+        } catch (\Exception $exception) {
+            Database::rollbackTransaction();
+            throw $exception;
+        }
+    }
+
+    private function validateUserProfileUpdateRequest(UserProfileUpdateRequest $request){
+        if($request->id == null || $request->name == null ||
+        trim($request->id) == "" || trim($request->name) == "") {
+            throw new ValidationException("id, Name can not blank");
         }
     }
 
