@@ -181,6 +181,26 @@ class UserService
         }
     }
 
+    public function deleteUserById(string $id): void
+    {
+        $user = $this->userRepository->findById($id);
+        if (!$user) {
+            throw new ValidationException("User not found");
+        }
+        $this->userRepository->deleteById($id);
+    }
+
+    public function findUserById(string $id): ?User
+    {
+        $user = $this->userRepository->findById($id);
+        if (!$user) {
+            throw new ValidationException("User not found");
+        }
+        return $user;
+    }
+
+    
+
 
 
 

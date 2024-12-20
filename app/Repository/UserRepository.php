@@ -77,4 +77,11 @@ class UserRepository
 
     }
 
+    public function deleteById(string $id): void
+    {
+        $statement = $this->connection->prepare("DELETE FROM users WHERE id = ?");
+        $statement->execute([$id]);
+    }
+
+
 }

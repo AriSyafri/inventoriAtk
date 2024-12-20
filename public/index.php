@@ -27,6 +27,9 @@ Router::add('POST', '/users/profile', UserController::class, 'postUpdateProfile'
 Router::add('GET', '/users/password', UserController::class, 'updatePassword', [MustLoginMiddleware::class]);
 Router::add('POST', '/users/password', UserController::class, 'postUpdatePassword', [MustLoginMiddleware::class]);
 Router::add('GET', '/users/show', UserController::class, 'getAllUsers', [MustLoginMiddleware::class]);
+Router::add('GET', '/users/delete', UserController::class, 'deleteUser', [MustLoginMiddleware::class]);
+Router::add('GET', '/users/edit', UserController::class, 'editUser', [MustLoginMiddleware::class]);
+Router::add('POST', '/users/edit', UserController::class, 'postEditUser', [MustLoginMiddleware::class]);
 
 
 Router::run();

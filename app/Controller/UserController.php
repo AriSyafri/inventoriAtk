@@ -161,25 +161,91 @@ class UserController
     }
 
     public function getAllUsers()
-{
-    try {
-        // Memanggil service untuk mendapatkan semua data pengguna
-        $users = $this->userService->findAllUsers();
+    {
+        try {
+            // Memanggil service untuk mendapatkan semua data pengguna
+            $users = $this->userService->findAllUsers();
 
-        // Mengarahkan ke tampilan yang menampilkan daftar pengguna
-        View::render('User/show', [
-            'title' => 'Show Data',
-            'users' => $users // Mengirim array users ke view
-        ]);
-    } catch (ValidationException $exception) {
-        // Menangani jika tidak ada pengguna ditemukan atau error validasi lainnya
-        View::render('User/show', [
-            'title' => 'Show Data',
-            'error' => $exception->getMessage(),
-            'users' => [] // Mengirim array kosong ke view
+            // Mengarahkan ke tampilan yang menampilkan daftar pengguna
+            View::render('User/show', [
+                'title' => 'Show Data',
+                'users' => $users // Mengirim array users ke view
+            ]);
+        } catch (ValidationException $exception) {
+            // Menangani jika tidak ada pengguna ditemukan atau error validasi lainnya
+            View::render('User/show', [
+                'title' => 'Show Data',
+                'error' => $exception->getMessage(),
+                'users' => [] // Mengirim array kosong ke view
+            ]);
+        }
+    }
+
+    public function deleteUser()
+    {
+        $id = $_GET['id'] ?? null;
+
+        if ($id) {
+            try {
+                $this->userService->deleteUserById($id);
+                View::redirect('/users/show');
+            } catch (ValidationException $exception) {
+                View::render('User/show', [
+                    'title' => 'Show Data',
+                    'error' => $exception->getMessage(),
+                    'users' => $this->userService->findAllUsers()
+                ]);
+            }
+        } else {
+            View::redirect('/users/show');
+        }
+    }
+    public function editUser()
+    {
+        $id = $_GET['id'] ?? null;
+    
+        if (!$id) {
+            View::redirect('/users'); // Redirect jika ID tidak ditemukan
+        }
+    
+        $user = $this->userService->findUserById($id);
+    
+        if (!$user) {
+            View::redirect('/users'); // Redirect jika user tidak ditemukan
+        }
+    
+        View::render('User/edit', [
+            'title' => 'Edit User',
+            'user' => [
+                'id' => $user->id,
+                'name' => $user->name,
+            ],
         ]);
     }
-}
+    
+    public function postEditUser()
+    {
+        $request = new UserProfileUpdateRequest();
+        $request->id = $_POST['id'];
+        $request->name = $_POST['name'];
+    
+        try {
+            $this->userService->updateProfile($request);
+            View::redirect('/');
+        } catch (ValidationException $exception) {
+            View::render('User/edit', [
+                'title' => 'Edit User',
+                'error' => $exception->getMessage(),
+                'user' => [
+                    'id' => $request->id,
+                    'name' => $request->name,
+                ],
+            ]);
+        }
+    }
+    
+
+    
 
 
 
