@@ -162,4 +162,26 @@ class UserService
         }
     }
 
+    public function findAllUsers(): array
+    {
+        try {
+            // Panggil method findAll dari repository untuk mendapatkan semua user
+            $users = $this->userRepository->findAll();
+
+            // Periksa apakah ada data pengguna
+            if (empty($users)) {
+                throw new ValidationException("No users found.");
+            }
+
+            return $users;
+
+        } catch (\Exception $exception) {
+            // Tangani exception jika terjadi kesalahan
+            throw $exception;
+        }
+    }
+
+
+
+
 }
