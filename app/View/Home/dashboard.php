@@ -13,6 +13,9 @@
                     <a href="/users/password" class="w-100 btn btn-lg btn-primary">Password</a>
                 </div>
                 <div class="form-floating mb-3">
+                    <a href="/users/show" class="w-100 btn btn-lg btn-primary">Show Data</a>
+                </div>
+                <div class="form-floating mb-3">
                     <a href="/users/logout" class="w-100 btn btn-lg btn-danger">Logout</a>
                 </div>
             </div>

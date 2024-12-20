@@ -160,4 +160,27 @@ class UserController
         }
     }
 
+    public function getAllUsers()
+{
+    try {
+        // Memanggil service untuk mendapatkan semua data pengguna
+        $users = $this->userService->findAllUsers();
+
+        // Mengarahkan ke tampilan yang menampilkan daftar pengguna
+        View::render('User/show', [
+            'title' => 'Show Data',
+            'users' => $users // Mengirim array users ke view
+        ]);
+    } catch (ValidationException $exception) {
+        // Menangani jika tidak ada pengguna ditemukan atau error validasi lainnya
+        View::render('User/show', [
+            'title' => 'Show Data',
+            'error' => $exception->getMessage(),
+            'users' => [] // Mengirim array kosong ke view
+        ]);
+    }
+}
+
+
+
 }
