@@ -52,6 +52,25 @@ class UserRepository
         }
     }
 
+    public function findAll(): array {
+        $statement = $this->connection->prepare("SELECT id, name FROM users");
+        $statement->execute();
+    
+        try {
+            $users = [];
+            while ($row = $statement->fetch()) {
+                $user = new User();
+                $user->id = $row['id'];
+                $user->name = $row['name'];
+                $users[] = $user; // Tambahkan user ke array
+            }
+            return $users; // Kembalikan array dari objek User
+        } finally {
+            $statement->closeCursor();
+        }
+    }
+    
+
     public function deleteAll():void {
 
         $this->connection->exec("DELETE FROM users");
