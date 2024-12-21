@@ -23,6 +23,30 @@ class BarangRepository
         return $barang;
     } 
 
+    public function findById(string $id): ?Barang {
+        $statement = $this->connection->prepare("SELECT idbarang, namabarang, brand, stok, harga, id_user FROM barang WHERE idbarang = ?");
+        $statement->execute([$id]);
+
+        try {
+            
+            if($row = $statement->fetch()){
+                $brg = new Barang();
+                $brg->id = $row['idbarang'];
+                $brg->nama = $row['namabarang'];
+                $brg->brand = $row['brand'];
+                $brg->stok = $row['stok'];
+                $brg->harga = $row['harga'];
+                $brg->idUser = $row['id_user'];
+                return $brg;
+            }else {
+                return null;
+            }
+
+        } finally {
+            $statement->closeCursor();
+        }
+    }
+
     public function findAll(): array {
         $statement = $this->connection->prepare("SELECT idbarang, namabarang, brand, stok, harga, id_user FROM barang");
         $statement->execute();
@@ -44,4 +68,5 @@ class BarangRepository
             $statement->closeCursor();
         }
     }
+
 }

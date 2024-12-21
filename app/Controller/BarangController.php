@@ -4,7 +4,9 @@ namespace Dots\Toko\Atk\Controller;
 
 use Dots\Toko\Atk\App\View;
 use Dots\Toko\Atk\Config\Database;
+use Dots\Toko\Atk\Domain\Barang;
 use Dots\Toko\Atk\Exception\ValidationException;
+use Dots\Toko\Atk\Model\BarangAddRequest;
 use Dots\Toko\Atk\Repository\BarangRepository;
 use Dots\Toko\Atk\Repository\SessionRepository;
 use Dots\Toko\Atk\Service\BarangService;
@@ -25,6 +27,34 @@ Class BarangController {
         // $sesionRepository = new SessionRepository($connection);
         // $this->sessionService = new SessionService($sesionRepository, $barangRepository);
     } 
+
+    public function add(){
+        View::render('Barang/add', [
+            'title' => 'Tambah Barang'
+        ]);
+    }
+
+    public function postAddItem(){
+        $request = new BarangAddRequest();
+        $request->id = $_POST['id'];
+        $request->nama = $_POST['nama'];
+        $request->brand = $_POST['brand'];
+        $request->stok = isset($_POST['stok']) ? (int) $_POST['stok'] : null; // Konversi ke integer
+        $request->harga = isset($_POST['harga']) ? (float) $_POST['harga'] : null; // Konversi ke float jika diperlukan
+        $request->idUser = $_POST['idUser'];
+
+        try {
+            $this->barangService->add($request);
+            // redirect to users/login
+            View::redirect('/barang/show');
+        } catch (ValidationException $exception) {
+            View::render('Barang/add', [
+                'title' => 'Tambah Barang',
+                'error' => $exception->getMessage()
+            ]);
+        }
+
+    }
 
     public function getAllBarang()
     {

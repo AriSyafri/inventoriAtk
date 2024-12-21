@@ -12,6 +12,8 @@
             <h1 class="display-4 fw-bold lh-1 mb-3">Menampilkan Data Barang </h1>
         </div>
 
+        <a href="/barang/add" class="w-100 btn btn-lg btn-primary">Tambah Barang</a>
+
         <table class="table">
             <thead>
                 <tr>
