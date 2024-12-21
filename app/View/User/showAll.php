@@ -12,6 +12,14 @@
             <h1 class="display-4 fw-bold lh-1 mb-3">Show Data User</h1>
         </div>
 
+        <!-- Form Pencarian -->
+        <form method="get" action="/users/search" class="mb-4">
+            <div class="input-group">
+                <input type="text" class="form-control" name="keyword" placeholder="Cari user..." value="<?= htmlspecialchars($_GET['keyword'] ?? '') ?>">
+                <button class="btn btn-primary" type="submit">Cari</button>
+            </div>
+        </form>
+
         <table class="table">
             <thead>
                 <tr>
@@ -28,14 +36,13 @@
                             <td><?= htmlspecialchars($user->name); ?></td>
                             <td>
                                 <a class="btn btn-success m-1" href="/users/edit?id=<?= htmlspecialchars($user->id); ?>">Ubah</a>
-
-                                <a class="btn btn-danger m-1" href="/users/delete?id=<?= htmlspecialchars($user->id); ?>" onclick="return confirm('yakin?');">Hapus</a>
+                                <a class="btn btn-danger m-1" href="/users/delete?id=<?= htmlspecialchars($user->id); ?>" onclick="return confirm('Yakin?');">Hapus</a>
                             </td>
                         </tr>
                     <?php } ?>
                 <?php } else { ?>
                     <tr>
-                        <td colspan="2" class="text-center">No data available</td>
+                        <td colspan="3" class="text-center">No data available</td>
                     </tr>
                 <?php } ?>
             </tbody>

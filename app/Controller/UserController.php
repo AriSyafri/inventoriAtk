@@ -257,6 +257,25 @@ class UserController
         }
     }
 
+    public function search()
+    {
+        $keyword = $_GET['keyword'] ?? '';
+        try {
+            $users = $this->userService->searchUsers($keyword);
+            View::render('User/showAll', [
+                'title' => 'Show Data User',
+                'users' => $users
+            ]);
+        } catch (ValidationException $exception) {
+            View::render('User/showAll', [
+                'title' => 'Show Data User',
+                'error' => $exception->getMessage(),
+                'users' => []
+            ]);
+        }
+    }
+
+
     
 
     

@@ -34,6 +34,7 @@ Router::add('GET', '/users/edit', UserController::class, 'editUser', [MustLoginM
 Router::add('POST', '/users/edit', UserController::class, 'postEditUser', [MustLoginMiddleware::class]);
 Router::add('GET', '/users/list', UserController::class, 'getAllUsersExceptCurrent', [MustLoginMiddleware::class]);
 Router::add('GET', '/barang/show', BarangController::class, 'getAllBarang', [MustLoginMiddleware::class]);
+Router::add('GET', '/users/search', UserController::class, 'search', [MustLoginMiddleware::class]);
 
 
 

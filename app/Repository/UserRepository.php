@@ -102,6 +102,26 @@ class UserRepository
         }
     }
 
+    public function search(string $keyword): array
+    {
+        $statement = $this->connection->prepare("SELECT id, name FROM users WHERE name LIKE ?");
+        $statement->execute(['%' . $keyword . '%']);
+
+        try {
+            $users = [];
+            while ($row = $statement->fetch()) {
+                $user = new User();
+                $user->id = $row['id'];
+                $user->name = $row['name'];
+                $users[] = $user;
+            }
+            return $users;
+        } finally {
+            $statement->closeCursor();
+        }
+    }
+
+
 
 
 }
