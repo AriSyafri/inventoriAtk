@@ -188,7 +188,7 @@ class UserController
         if ($id) {
             try {
                 $this->userService->deleteUserById($id);
-                View::redirect('/users/show');
+                View::redirect('/users/list');
             } catch (ValidationException $exception) {
                 View::render('User/show', [
                     'title' => 'Show Data',
@@ -197,22 +197,16 @@ class UserController
                 ]);
             }
         } else {
-            View::redirect('/users/show');
+            View::redirect('/users/list');
         }
     }
     public function editUser()
     {
         $id = $_GET['id'] ?? null;
-    
-        if (!$id) {
-            View::redirect('/users'); // Redirect jika ID tidak ditemukan
-        }
+
     
         $user = $this->userService->findUserById($id);
-    
-        if (!$user) {
-            View::redirect('/users'); // Redirect jika user tidak ditemukan
-        }
+
     
         View::render('User/edit', [
             'title' => 'Edit User',
@@ -231,7 +225,7 @@ class UserController
     
         try {
             $this->userService->updateProfile($request);
-            View::redirect('/');
+            View::redirect('/users/list');
         } catch (ValidationException $exception) {
             View::render('User/edit', [
                 'title' => 'Edit User',
@@ -243,6 +237,26 @@ class UserController
             ]);
         }
     }
+
+    public function getAllUsersExceptCurrent()
+    {
+        $currentUser = $this->sessionService->current();
+
+        try {
+            $users = $this->userService->findAllExceptCurrent($currentUser->id);
+            View::render('User/showAll', [
+                'title' => 'All Users',
+                'users' => $users
+            ]);
+        } catch (ValidationException $exception) {
+            View::render('User/showAll', [
+                'title' => 'All Users',
+                'error' => $exception->getMessage(),
+                'users' => []
+            ]);
+        }
+    }
+
     
 
     

@@ -30,6 +30,8 @@ Router::add('GET', '/users/show', UserController::class, 'getAllUsers', [MustLog
 Router::add('GET', '/users/delete', UserController::class, 'deleteUser', [MustLoginMiddleware::class]);
 Router::add('GET', '/users/edit', UserController::class, 'editUser', [MustLoginMiddleware::class]);
 Router::add('POST', '/users/edit', UserController::class, 'postEditUser', [MustLoginMiddleware::class]);
+Router::add('GET', '/users/list', UserController::class, 'getAllUsersExceptCurrent', [MustLoginMiddleware::class]);
+
 
 
 Router::run();

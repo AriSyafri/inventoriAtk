@@ -17,6 +17,7 @@
                 <tr>
                     <th scope="col">Id</th>
                     <th scope="col">Name</th>
+                    <th scope="col">Aksi</th>
                 </tr>
             </thead>
             <tbody>
@@ -25,6 +26,11 @@
                         <tr>
                             <td><?= htmlspecialchars($user->id); ?></td>
                             <td><?= htmlspecialchars($user->name); ?></td>
+                            <td>
+                                <a class="btn btn-success m-1" href="/users/edit?id=<?= htmlspecialchars($user->id); ?>">Ubah</a>
+
+                                <a class="btn btn-danger m-1" href="/users/delete?id=<?= htmlspecialchars($user->id); ?>" onclick="return confirm('yakin?');">Hapus</a>
+                            </td>
                         </tr>
                     <?php } ?>
                 <?php } else { ?>

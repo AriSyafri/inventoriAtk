@@ -199,6 +199,12 @@ class UserService
         return $user;
     }
 
+    public function findAllExceptCurrent(string $currentUserId): array
+    {
+        return $this->userRepository->findAllExcept($currentUserId);
+    }
+
+
     
 
 
