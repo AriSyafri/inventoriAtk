@@ -6,7 +6,9 @@ require_once __DIR__ . '/../vendor/autoload.php';
 use Dots\Toko\Atk\App\Router;
 use Dots\Toko\Atk\Controller\HomeController;
 use Dots\Toko\Atk\Controller\UserController;
+
 use Dots\Toko\Atk\Config\Database;
+use Dots\Toko\Atk\Controller\BarangController;
 use Dots\Toko\Atk\Middleware\MustLoginMiddleware;
 use Dots\Toko\Atk\Middleware\MustNotLoginMiddleware;
 
@@ -31,6 +33,7 @@ Router::add('GET', '/users/delete', UserController::class, 'deleteUser', [MustLo
 Router::add('GET', '/users/edit', UserController::class, 'editUser', [MustLoginMiddleware::class]);
 Router::add('POST', '/users/edit', UserController::class, 'postEditUser', [MustLoginMiddleware::class]);
 Router::add('GET', '/users/list', UserController::class, 'getAllUsersExceptCurrent', [MustLoginMiddleware::class]);
+Router::add('GET', '/barang/show', BarangController::class, 'getAllBarang', [MustLoginMiddleware::class]);
 
 
 

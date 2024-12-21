@@ -17,7 +17,10 @@
                 </div>
                 <div class="form-floating mb-3">
                     <a href="/users/list" class="w-100 btn btn-lg btn-primary">Manage Data</a>
+                </div>
 
+                <div class="form-floating mb-3">
+                    <a href="/barang/show" class="w-100 btn btn-lg btn-primary">Show Item</a>
                 </div>
                 <div class="form-floating mb-3">
                     <a href="/users/logout" class="w-100 btn btn-lg btn-danger">Logout</a>
