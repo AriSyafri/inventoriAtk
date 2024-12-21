@@ -204,10 +204,11 @@ class UserService
         return $this->userRepository->findAllExcept($currentUserId);
     }
 
-    public function searchUsers(string $keyword): array
+    public function searchUsers(string $keyword, string $excludeId): array
     {
-        return $this->userRepository->search($keyword);
+        return $this->userRepository->search($keyword, $excludeId);
     }
+    
 
 
 

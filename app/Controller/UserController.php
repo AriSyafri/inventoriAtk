@@ -259,9 +259,10 @@ class UserController
 
     public function search()
     {
+        $currentUser = $this->sessionService->current();
         $keyword = $_GET['keyword'] ?? '';
         try {
-            $users = $this->userService->searchUsers($keyword);
+            $users = $this->userService->searchUsers($keyword, $currentUser->id);
             View::render('User/showAll', [
                 'title' => 'Show Data User',
                 'users' => $users

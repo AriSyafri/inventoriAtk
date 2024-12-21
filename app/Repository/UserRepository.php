@@ -102,10 +102,14 @@ class UserRepository
         }
     }
 
-    public function search(string $keyword): array
+    public function search(string $keyword, string $excludeId): array
     {
-        $statement = $this->connection->prepare("SELECT id, name FROM users WHERE name LIKE ?");
-        $statement->execute(['%' . $keyword . '%']);
+        $statement = $this->connection->prepare("
+            SELECT id, name 
+            FROM users 
+            WHERE name LIKE ? AND id != ?
+        ");
+        $statement->execute(['%' . $keyword . '%', $excludeId]);
 
         try {
             $users = [];
@@ -120,6 +124,7 @@ class UserRepository
             $statement->closeCursor();
         }
     }
+
 
 
 
