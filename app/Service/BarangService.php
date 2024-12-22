@@ -7,6 +7,8 @@ use Dots\Toko\Atk\Domain\Barang;
 use Dots\Toko\Atk\Exception\ValidationException;
 use Dots\Toko\Atk\Model\BarangAddRequest;
 use Dots\Toko\Atk\Model\BarangAddResponse;
+use Dots\Toko\Atk\Model\BarangUpdateRequest;
+use Dots\Toko\Atk\Model\BarangUpdateResponse;
 use Dots\Toko\Atk\Repository\BarangRepository;
 
 class BarangService
@@ -78,6 +80,58 @@ class BarangService
         trim($request->harga) == "" ||trim($request->idUser) == "") {
             throw new ValidationException("id, name, stok, harga tidak boleh kosong");
         }
+    }
+
+    public function updateItem(BarangUpdateRequest $request): BarangUpdateResponse
+    {
+
+        $this->validateUpdateItemRequest($request);
+
+        try {
+            Database::beginTransaction();
+            $barang = $this->barangRepository->findById($request->id);
+            if($barang == null){
+                throw new ValidationException("item notFound");
+            }
+
+            $barang->id = $request->id;
+            $barang->nama = $request->nama;
+            $barang->brand = $request->brand;
+            $barang->stok = $request->stok;
+            $barang->harga = $request->harga;
+            $barang->idUser = $request->idUser;
+            $this->barangRepository->update($barang);
+
+            Database::commitTransaction();
+
+            $response = new BarangUpdateResponse();
+            $response->barang = $barang;
+            return $response;
+
+        } catch(\Exception $exception) {
+            Database::rollbackTransaction();
+            throw $exception;
+        }
+
+    }
+
+    private function validateUpdateItemRequest(BarangUpdateRequest $request){
+        if($request->id == null || $request->nama == null || $request->brand == null ||
+        $request->stok == null || $request->harga == null || $request->idUser == null ||
+        trim($request->id) == "" || trim($request->nama) == "" ||
+        trim($request->brand) == "" || trim($request->stok) == "" ||
+        trim($request->harga) == "" ||trim($request->idUser) == "") {
+            throw new ValidationException("id, name, stok, harga tidak boleh kosong");
+        }
+    }
+
+    public function findBarangById(string $id): ?Barang
+    {
+        $barang = $this->barangRepository->findById($id);
+        if (!$barang) {
+            throw new ValidationException("Barang not found");
+        }
+        return $barang;
     }
 
 }

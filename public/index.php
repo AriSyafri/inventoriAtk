@@ -37,6 +37,8 @@ Router::add('GET', '/barang/show', BarangController::class, 'getAllBarang', [Mus
 Router::add('GET', '/users/search', UserController::class, 'search', [MustLoginMiddleware::class]);
 Router::add('GET', '/barang/add', BarangController::class, 'add', [MustLoginMiddleware::class]);
 Router::add('POST', '/barang/add', BarangController::class, 'postAddItem', [MustLoginMiddleware::class]);
+Router::add('GET', '/barang/update', BarangController::class, 'update', [MustLoginMiddleware::class]);
+Router::add('POST', '/barang/update', BarangController::class, 'postUpdate', [MustLoginMiddleware::class]);
 
 
 

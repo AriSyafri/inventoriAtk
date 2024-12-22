@@ -69,4 +69,15 @@ class BarangRepository
         }
     }
 
+    public function update(Barang $barang): Barang
+    {
+        $statement = $this->connection->prepare("UPDATE barang SET namabarang = ?, brand = ?, stok = ?, harga = ?, id_user = ? WHERE idbarang = ?");
+        $statement->execute([
+            $barang->nama, $barang->brand, $barang->stok, $barang->harga, $barang->idUser, $barang->id
+        ]);
+        return $barang;
+    }
+
+
+
 }
