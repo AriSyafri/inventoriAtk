@@ -84,6 +84,33 @@ class BarangRepository
         $statement->execute([$id]);
     }
 
+    public function search(string $keyword): array
+    {
+        $statement = $this->connection->prepare("
+            SELECT idbarang, namabarang, brand, stok, harga, id_user FROM barang
+            WHERE namabarang LIKE ?
+        ");
+        $statement->execute(['%' . $keyword . '%']);
+
+
+        try {
+            $barang = [];
+            while ($row = $statement->fetch()) {
+                $brg = new Barang();
+                $brg->id = $row['idbarang'];
+                $brg->nama = $row['namabarang'];
+                $brg->brand = $row['brand'];
+                $brg->stok = $row['stok'];
+                $brg->harga = $row['harga'];
+                $brg->idUser = $row['id_user'];
+                $barang[] = $brg;
+            }
+            return $barang;
+        } finally {
+            $statement->closeCursor();
+        }
+    }
+
 
 
 

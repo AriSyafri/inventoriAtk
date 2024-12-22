@@ -143,5 +143,11 @@ class BarangService
         $this->barangRepository->deleteById($id);
     }
 
+    public function searchBarang(string $keyword): array
+    {
+        return $this->barangRepository->search($keyword);
+
+    }
+
 
 }

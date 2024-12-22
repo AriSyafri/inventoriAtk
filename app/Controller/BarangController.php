@@ -57,26 +57,26 @@ Class BarangController {
 
     }
 
-    public function getAllBarang()
-    {
-        try {
-            // Memanggil service untuk mendapatkan semua data pengguna
-            $barang = $this->barangService->findAllItem();
+    // public function getAllBarang()
+    // {
+    //     try {
+    //         // Memanggil service untuk mendapatkan semua data pengguna
+    //         $barang = $this->barangService->findAllItem();
 
-            // Mengarahkan ke tampilan yang menampilkan daftar pengguna
-            View::render('Barang/show', [
-                'title' => 'Show Item',
-                'barang' => $barang // Mengirim array users ke view
-            ]);
-        } catch (ValidationException $exception) {
-            // Menangani jika tidak ada pengguna ditemukan atau error validasi lainnya
-            View::render('Barang/show', [
-                'title' => 'Show Item',
-                'error' => $exception->getMessage(),
-                'barang' => [] // Mengirim array kosong ke view
-            ]);
-        }
-    }
+    //         // Mengarahkan ke tampilan yang menampilkan daftar pengguna
+    //         View::render('Barang/show', [
+    //             'title' => 'Show Item',
+    //             'barang' => $barang // Mengirim array users ke view
+    //         ]);
+    //     } catch (ValidationException $exception) {
+    //         // Menangani jika tidak ada pengguna ditemukan atau error validasi lainnya
+    //         View::render('Barang/show', [
+    //             'title' => 'Show Item',
+    //             'error' => $exception->getMessage()
+    //             // Mengirim array kosong ke view
+    //         ]);
+    //     }
+    // }
 
     public function update(){
 
@@ -133,4 +133,26 @@ Class BarangController {
             ]);
         }
     }
+
+    public function search()
+    {
+        $keyword = $_GET['keyword'] ?? '';
+        try {
+            $barang = $keyword
+                ? $this->barangService->searchBarang($keyword)
+                : $this->barangService->findAllItem(); // Metode untuk mendapatkan semua barang.
+            
+            View::render('Barang/show', [
+                'title' => 'Show Data Barang',
+                'barang' => $barang,
+            ]);
+        } catch (ValidationException $exception) {
+            View::render('Barang/show', [
+                'title' => 'Show Data Barang',
+                'error' => $exception->getMessage(),
+                'barang' => [],
+            ]);
+        }
+    }
+    
 }

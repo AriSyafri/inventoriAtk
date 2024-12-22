@@ -12,7 +12,16 @@
             <h1 class="display-4 fw-bold lh-1 mb-3">Menampilkan Data Barang </h1>
         </div>
 
+                <!-- Form Pencarian -->
+        <form method="get" action="/barang/show" class="mb-2">
+            <div class="input-group">
+                <input type="text" class="form-control" name="keyword" placeholder="Cari user..." value="<?= htmlspecialchars($_GET['keyword'] ?? '') ?>">
+                <button class="btn btn-primary" type="submit">Cari</button>
+            </div>
+        </form>
+
         <a href="/barang/add" class="w-100 btn btn-lg btn-primary">Tambah Barang</a>
+
 
         <table class="table">
             <thead>
