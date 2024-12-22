@@ -118,4 +118,19 @@ Class BarangController {
             ]);
         }
     }
+
+    public function deleteBarang()
+    {
+        $id = $_GET['id'] ?? null;
+
+        try {
+            $this->barangService->deleteBarang($id);
+            View::redirect('/barang/show');
+        } catch (ValidationException $exception) {
+            View::render('Barang/show', [
+                'title' => 'Show Data',
+                'error' => $exception->getMessage()
+            ]);
+        }
+    }
 }

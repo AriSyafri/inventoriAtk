@@ -134,4 +134,14 @@ class BarangService
         return $barang;
     }
 
+    public function deleteBarang(string $id): void
+    {
+        $barang = $this->barangRepository->findById($id);
+        if (!$barang) {
+            throw new ValidationException("Barang not found");
+        }
+        $this->barangRepository->deleteById($id);
+    }
+
+
 }

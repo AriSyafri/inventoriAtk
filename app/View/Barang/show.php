@@ -37,7 +37,7 @@
                             <td>
                                 <a class="btn btn-success m-1" href="/barang/update?id=<?= htmlspecialchars($brg->id); ?>">Ubah</a>
 
-                                <a class="btn btn-danger m-1" href="/users/delete?id=<?= htmlspecialchars($user->id); ?>" onclick="return confirm('yakin?');">Hapus</a>
+                                <a class="btn btn-danger m-1" href="/barang/delete?id=<?= htmlspecialchars($brg->id); ?>" onclick="return confirm('yakin?');">Hapus</a>
                             </td>
                         </tr>
                     <?php } ?>

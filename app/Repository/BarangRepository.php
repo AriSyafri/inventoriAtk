@@ -78,6 +78,13 @@ class BarangRepository
         return $barang;
     }
 
+    public function deleteById(string $id): void
+    {
+        $statement = $this->connection->prepare("DELETE FROM barang WHERE idbarang = ?");
+        $statement->execute([$id]);
+    }
+
+
 
 
 }

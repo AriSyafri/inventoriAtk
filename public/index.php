@@ -39,6 +39,7 @@ Router::add('GET', '/barang/add', BarangController::class, 'add', [MustLoginMidd
 Router::add('POST', '/barang/add', BarangController::class, 'postAddItem', [MustLoginMiddleware::class]);
 Router::add('GET', '/barang/update', BarangController::class, 'update', [MustLoginMiddleware::class]);
 Router::add('POST', '/barang/update', BarangController::class, 'postUpdate', [MustLoginMiddleware::class]);
+Router::add('GET', '/barang/delete', BarangController::class, 'deleteBarang', [MustLoginMiddleware::class]);
 
 
 
